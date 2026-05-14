@@ -81,6 +81,8 @@ public:
     void StopMonitoring();
 
 protected:
+    bool ShouldScrollToSelectionOnUpdate() const override { return false; }
+
     static CFileWatcherControl* m_singleton;
 
     std::vector<std::jthread> m_watchThreads;

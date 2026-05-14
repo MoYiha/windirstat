@@ -613,6 +613,7 @@ void CTreeListControl::CollapseItem(const int i)
 
     if (todelete > 0) RemoveListItem(i + 1, todelete);
     item->SetExpanded(false);
+    RedrawItems(i, i);
 }
 
 int CTreeListControl::GetItemScrollPosition(const CTreeListItem* item) const
@@ -687,22 +688,25 @@ void CTreeListControl::ExpandItem(const int i, const bool scroll)
         SetColumnWidth(0, maxwidth + padding);
     }
 
+    m_suppressScrollToSelection = true;
     InsertListItem(i + 1, children);
     item->SetExpanded(true);
 
-    if (scroll)
-    {
-        // Scroll up so far, that item is still visible
-        // and the first child becomes visible, if possible.
-        if (item->GetTreeListChildCount() > 0)
-        {
-            EnsureVisible(i + 1, false);
-        }
-        EnsureVisible(i, false);
-    }
-
     // Sort at end so we do not invalidate position data
     if (childCount > 0) SortItems();
+    m_suppressScrollToSelection = false;
+
+    if (scroll)
+    {
+        // Scroll so that the expanded item and its first child are visible.
+        // Use FindTreeItem() because SortItems() may have moved the item.
+        const int newIndex = FindTreeItem(item);
+        if (item->GetTreeListChildCount() > 0)
+        {
+            EnsureVisible(newIndex + 1, false);
+        }
+        EnsureVisible(newIndex, false);
+    }
 }
 
 void CTreeListControl::OnKeyDown(const UINT nChar, const UINT nRepCnt, const UINT nFlags)

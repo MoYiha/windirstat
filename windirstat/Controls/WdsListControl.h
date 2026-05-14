@@ -147,6 +147,7 @@ public:
     void SetSorting(int sortColumn, bool ascending);
     virtual void SortItems();
     virtual bool GetAscendingDefault(int column);
+    virtual bool ShouldScrollToSelectionOnUpdate() const { return true; }
     int GetItemCount() const noexcept { return static_cast<int>(m_items.size()); }
     void SetOwnsItems(const bool owns) { m_ownsItems = owns; }
 

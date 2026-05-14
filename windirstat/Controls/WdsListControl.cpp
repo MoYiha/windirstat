@@ -69,8 +69,7 @@ namespace
                 }
             }
 
-            // Scroll once to the most relevant item
-            if (scrollTo != -1)
+            if (scrollTo != -1 && m_list->ShouldScrollToSelectionOnUpdate())
             {
                 m_list->EnsureVisible(scrollTo, FALSE);
             }

@@ -153,6 +153,7 @@ protected:
     void CollapseItem(int i);
     void ExpandItem(int i, bool scroll = true);
     void ToggleExpansion(int i);
+    bool ShouldScrollToSelectionOnUpdate() const override { return !m_suppressScrollToSelection; }
 
     //
     /////////////////////////////////////////////////////
@@ -161,12 +162,12 @@ protected:
     bool m_lButtonDownOnPlusMinusRect = false; // Set in OnLButtonDown(). True, if plus-minus-rect hit.
     LOGICAL_FOCUS m_logicalFocus = static_cast<LOGICAL_FOCUS>(0);
     bool m_blockFirstColumnReorder = false;
+    bool m_suppressScrollToSelection = false;
 
     DECLARE_MESSAGE_MAP()
     afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-    afx_msg void OnLvnItemChangingList(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnSetFocus(CWnd* pOldWnd);
     afx_msg BOOL OnHeaderEndDrag(UINT, NMHDR* pNMHDR, LRESULT* pResult);
