@@ -141,7 +141,7 @@ class CTreeListControl : public CWdsListControl
         POSITION pos = GetFirstSelectedItemPosition();
         if (pos == nullptr) return nullptr;
         const int i = GetNextSelectedItem(pos);
-        if (GetNextSelectedItem(pos) != -1) return nullptr;
+        if (pos != nullptr) return nullptr;
 
         return reinterpret_cast<T*>(GetItem(i));
     }

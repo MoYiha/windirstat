@@ -704,6 +704,8 @@ void CWdsListControl::SetSorting(const int sortColumn, const bool ascending)
 
 void CWdsListControl::InsertListItem(const int i, const std::vector<CWdsListItem*>& items)
 {
+    if (items.empty()) return;
+
     ASSERT(i >= 0 && i <= GetItemCount());
 
     SelectionPreserver preserve(this);
@@ -962,8 +964,11 @@ LRESULT CWdsListControl::OnSelectionChanged(WPARAM wParam, LPARAM lParam)
 
 void CWdsListControl::RemoveListItem(const int i, const int c)
 {
+    if (c <= 0) return;
+
     int itemCount = GetItemCount();
     ASSERT(i >= 0 && i < itemCount);
+    ASSERT(i + c <= itemCount);
 
     SelectionPreserver preserve(this);
 
@@ -986,7 +991,14 @@ void CWdsListControl::RemoveListItem(const int i, const int c)
     }
 
     SetItemCountEx(itemCount, LVSICF_NOINVALIDATEALL | LVSICF_NOSCROLL);
-    RedrawItems(i, itemCount - 1);
+    if (i < itemCount)
+    {
+        RedrawItems(i, itemCount - 1);
+    }
+    else
+    {
+        Invalidate();
+    }
 }
 
 void CWdsListControl::ClearList()
